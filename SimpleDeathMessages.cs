@@ -24,7 +24,7 @@ namespace Oxide.Plugins
                 if (attacker != null)
                 {
                     var weaponName = GetWeaponName(attacker);
-                    var distance = GetDistance(session.WorldPlayerEntity.transform.position, attacker.WorldPlayerEntity.transform.position);
+                    var distance = GetDistance(session.WorldPlayerEntity.transform.position, attacker.WorldPlayerEntity.transform.position).ToString().Split('.').First();
                     GlobalBroadcast(Config["PvP Message"].ToString(), session.Identity.Name, attacker.Identity.Name, weaponName, distance);
                 }
                 else
