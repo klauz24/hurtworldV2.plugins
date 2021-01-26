@@ -1,4 +1,4 @@
-﻿using Oxide.Ext.Discord;
+using Oxide.Ext.Discord;
 using Oxide.Ext.Discord.Attributes;
 using Oxide.Ext.Discord.DiscordObjects;
 
@@ -18,9 +18,10 @@ namespace Oxide.Plugins
 
         private void OnServerInitialized()
         {
-            if (Config["Token"].ToString() != "")
+            var token = Config["Token"].ToString();
+            if (token != "")
             {
-                Discord.CreateClient(this, Config["Token"].ToString());
+                Discord.CreateClient(this, token);
                 timer.In(3, () => UpdateStatus());
                 timer.Every(int.Parse(Config["UpdateInterval"].ToString()), () => UpdateStatus());
                 timer.Every(300, () => Server.Command("o.reload PlayerCountDiscordBot"));
