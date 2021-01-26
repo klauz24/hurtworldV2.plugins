@@ -23,7 +23,7 @@ namespace Oxide.Plugins
                 Discord.CreateClient(this, Config["Token"].ToString());
                 timer.In(3, () => UpdateStatus());
                 timer.Every(int.Parse(Config["UpdateInterval"].ToString()), () => UpdateStatus());
-                timer.Every(300f, () => Server.Command("o.reload PlayerCountDiscordBot"));
+                timer.Every(300, () => Server.Command("o.reload PlayerCountDiscordBot"));
             }
             else
             {
