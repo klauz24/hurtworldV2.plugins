@@ -1,4 +1,4 @@
-﻿using Oxide.Core;
+using Oxide.Core;
 using System.Collections.Generic;
 
 namespace Oxide.Plugins
@@ -35,7 +35,7 @@ namespace Oxide.Plugins
 		}
 
 		private void AddCustomItem(Inventory inv)
-        {
+                {
 			var rnd = new System.Random();
 			var index = rnd.Next(_list.Count);
 			var item = _list[index];
