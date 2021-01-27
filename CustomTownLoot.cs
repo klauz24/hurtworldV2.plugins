@@ -33,17 +33,8 @@ namespace Oxide.Plugins
 				Interface.uMod.DataFileSystem.WriteObject("CustomTownLoot", _list);
 			}
 		}
-
-		private void AddCustomItem(Inventory inv)
-                {
-			var rnd = new System.Random();
-			var index = rnd.Next(_list.Count);
-			var item = _list[index];
-			var newItem = GlobalItemManager.Instance.CreateItem(RuntimeHurtDB.Instance.GetObjectByGuid<ItemGeneratorAsset>(item.Guid), rnd.Next(item.MinStack, item.MaxStack));
-			inv.GiveItemServer(newItem);
-		}
-
-		private void OnEntitySpawned(HNetworkView data)
+		
+	        private void OnEntitySpawned(HNetworkView data)
 		{
 			if (data.gameObject.name == "GenericTownLootCacheServer(Clone)")
 			{
@@ -54,6 +45,15 @@ namespace Oxide.Plugins
 					AddCustomItem(inv);
 				}
 			}
+		}
+
+		private void AddCustomItem(Inventory inv)
+                {
+			var rnd = new System.Random();
+			var index = rnd.Next(_list.Count);
+			var item = _list[index];
+			var newItem = GlobalItemManager.Instance.CreateItem(RuntimeHurtDB.Instance.GetObjectByGuid<ItemGeneratorAsset>(item.Guid), rnd.Next(item.MinStack, item.MaxStack));
+			inv.GiveItemServer(newItem);
 		}
 	}
 }
