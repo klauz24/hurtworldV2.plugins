@@ -1,13 +1,25 @@
 using Oxide.Ext.Discord;
+using System.Collections.Generic;
 using Oxide.Ext.Discord.Attributes;
-using Oxide.Ext.Discord.DiscordObjects;
+using Oxide.Ext.Discord.Entities.Users;
+using Oxide.Ext.Discord.Entities.Activities;
+using Oxide.Ext.Discord.Entities.Gatway.Commands;
 
 namespace Oxide.Plugins
 {
-    [Info("Player Count Discord Bot", "klauz24", "1.0.0")]
-    internal class PlayerCountDiscordBot : HurtworldPlugin
+    [Info("Player Count Discord Bot", "klauz24", "1.0.1")]
+    internal class PlayerCountDiscordBot : CovalencePlugin
     {
         [DiscordClient] private DiscordClient _client;
+
+        private DiscordActivity _activity = new DiscordActivity();
+
+        private UpdatePresenceCommand _status = new UpdatePresenceCommand
+        {
+            Afk = false,
+            Since = 0,
+            Status = UserStatusType.Online
+        };
 
         protected override void LoadDefaultConfig()
         {
@@ -16,31 +28,28 @@ namespace Oxide.Plugins
             Config["Status"] = "{0}/{1}";
         }
 
-        private void OnServerInitialized()
+        private void OnServerInitialized() => TryToStart();
+
+        private void TryToStart()
         {
             var token = Config["Token"].ToString();
-            if (token != "")
+            if (token == "")
             {
-                Discord.CreateClient(this, token);
-                timer.In(3f, () => UpdateStatus());
-                timer.Every(float.Parse(Config["UpdateInterval"].ToString()), () => UpdateStatus());
-                timer.Every(300f, () => Server.Command("o.reload PlayerCountDiscordBot"));
+                PrintError("Discord token is not setup!");
+                return;
             }
-            else
+            var settings = new DiscordSettings { ApiToken = token };
+            _client.Connect(settings);
+            _status.Activities = new List<DiscordActivity>
             {
-                Puts("Discord token is not setup.");
-            }
-        }
-
-        private void UpdateStatus()
-        {
-            _client.UpdateStatus(new Presence()
+                _activity
+            };
+            var updateInterval = float.Parse(Config["UpdateInterval"].ToString());
+            timer.Every(updateInterval, () =>
             {
-                Game = new Ext.Discord.DiscordObjects.Game()
-                {
-                    Name = string.Format(Config["Status"].ToString(), GameManager.Instance.GetPlayerCount(), GameManager.Instance.ServerConfig.MaxPlayers),
-                    Type = ActivityType.Game
-                }
+                _activity.Name = string.Format(Config["Status"].ToString(), server.Players, server.MaxPlayers);
+                _activity.Type = ActivityType.Game;
+                _client?.Bot?.UpdateStatus(_status);
             });
         }
     }
