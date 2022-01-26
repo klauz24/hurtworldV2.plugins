@@ -5,9 +5,11 @@ using Oxide.Ext.Discord.Entities.Users;
 using Oxide.Ext.Discord.Entities.Activities;
 using Oxide.Ext.Discord.Entities.Gatway.Commands;
 
+// Latest Discord extension: https://umod.org/extensions/discord
+
 namespace Oxide.Plugins
 {
-    [Info("Player Count Discord Bot", "klauz24", "1.0.1")]
+    [Info("Player Count Discord Bot", "klauz24", "1.0.2")]
     internal class PlayerCountDiscordBot : CovalencePlugin
     {
         [DiscordClient] private DiscordClient _client;
