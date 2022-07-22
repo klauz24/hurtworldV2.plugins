@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using Oxide.Ext.Discord;
 using Oxide.Ext.Discord.Attributes;
-using Oxide.Ext.Discord.DiscordObjects;
 
 namespace Oxide.Plugins
 {
@@ -31,19 +30,19 @@ namespace Oxide.Plugins
             {
                 Discord.CreateClient(this, token);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 PrintError($"Failed to initialize Discord Bot, error: {ex.Message}");
             }
             var refreshRate = Config["Refresh rate"].ToString();
             timer.Every(Convert.ToInt32(refreshRate), () =>
             {
-                Client.UpdateStatus(new Presence()
+                Client.UpdateStatus(new Ext.Discord.DiscordObjects.Presence()
                 {
                     Game = new Ext.Discord.DiscordObjects.Game
                     {
                         Name = Config["Format"].ToString().Replace("{current}", players.Connected.Count().ToString()).Replace("{max}", server.MaxPlayers.ToString()),
-                        Type = ActivityType.Game
+                        Type = Ext.Discord.DiscordObjects.ActivityType.Game
                     },
                     Status = "online",
                     Since = 0,
