@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Oxide.Ext.Discord;
 using Oxide.Ext.Discord.Attributes;
@@ -5,7 +6,7 @@ using Oxide.Ext.Discord.DiscordObjects;
 
 namespace Oxide.Plugins
 {
-    [Info("Player Count for Discord Ext. v.1.x.x", "klauz24", "1.0.0")]
+    [Info("Player Count for Discord Ext. v.1.x.x", "klauz24", "1.0.1")]
     internal class PlayerCount : CovalencePlugin
     {
         [DiscordClient] DiscordClient Client;
@@ -15,7 +16,7 @@ namespace Oxide.Plugins
             LogWarning("Creating a new configuration file");
             Config["Token"] = "DISCORD_TOKEN";
             Config["Format"] = "{current}/{max}";
-            Config["Refresh rate"] = 30;
+            Config["Refresh rate"] = 60;
         }
 
         private void OnServerInitialized()
@@ -26,9 +27,16 @@ namespace Oxide.Plugins
                 PrintError("You did not setup your Discord token in the config file!");
                 return;
             }
-            Discord.CreateClient(this, token);
+            try
+            {
+                Discord.CreateClient(this, token);
+            }
+            catch(Exception ex)
+            {
+                PrintError($"Failed to initialize Discord Bot, error: {ex.Message}");
+            }
             var refreshRate = Config["Refresh rate"].ToString();
-            timer.Every(int.Parse(refreshRate), () =>
+            timer.Every(Convert.ToInt32(refreshRate), () =>
             {
                 Client.UpdateStatus(new Presence()
                 {
