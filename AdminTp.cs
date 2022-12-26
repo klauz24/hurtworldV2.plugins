@@ -1,6 +1,5 @@
 namespace Oxide.Plugins
 {
-
     [Info("Admin Tp", "klauz24", "1.0.0")]
     internal class AdminTp : HurtworldPlugin
     {
@@ -21,8 +20,6 @@ namespace Oxide.Plugins
                     {
                         hurt.SendChatMessage(session, "<color=red>[Admin Tp]</color>", $"Failed to find {args[0]}.");
                     }
-
-
                 }
                 else
                 {
