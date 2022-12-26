@@ -15,7 +15,7 @@ namespace Oxide.Plugins
                     if (targetIPlayer != null)
                     {
                         session.IPlayer.Teleport(targetIPlayer.Position());
-                        hurt.SendChatMessage(session, "<color=yellow>[Inventory Inspect]</color>", $"Teleported to {targetIPlayer.Name}.");
+                        hurt.SendChatMessage(session, "<color=red>[Admin Tp]]</color>", $"Teleported to {targetIPlayer.Name}.");
                     }
                     else
                     {
