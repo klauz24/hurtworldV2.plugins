@@ -2,7 +2,6 @@ using System.Collections.Generic;
 
 namespace Oxide.Plugins
 {
-
     [Info("Inventory Inspect", "klauz24", "1.0.1")]
     internal class InventoryInspect : HurtworldPlugin
     {
@@ -33,9 +32,10 @@ namespace Oxide.Plugins
                             {
                                 continue;
                             }
+							var clone = GlobalItemManager.Instance.CloneItem(item);
                             queue.Add(new QueueItem()
                             {
-                                Item = GlobalItemManager.Instance.CloneItem(item),
+                                Item = clone,
                                 Slot = i
                             });
                         }
